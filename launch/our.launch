@@ -1,0 +1,4 @@
+<launch>
+<node pkg="saastutorial" type="publisher" name="publisher" output="screen" />
+<node pkg="saastutorial" type="listener" name="listener" output="screen" />
+</launch>
