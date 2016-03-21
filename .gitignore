@@ -1,0 +1,5 @@
+CMakeFiles/*
+catkin_generated/*
+Makefile
+*.cmake
+*~
