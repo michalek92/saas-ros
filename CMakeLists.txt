@@ -127,27 +127,22 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(saastutorial ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-## Declare a C++ executable
-add_executable(publisher src/publisher.cpp)
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-add_dependencies(publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(publisher
+## Declare C++ executables
+add_executable(vjoy src/vjoy.cpp)
+add_dependencies(vjoy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(vjoy
    ${catkin_LIBRARIES}
 )
 
-## Declare a C++ executable
-add_executable(listener src/listener.cpp)
+add_executable(joy_teleop src/joy_teleop.cpp)
+add_dependencies(joy_teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(joy_teleop
+   ${catkin_LIBRARIES}
+)
 
-## Add cmake target dependencies of the executable
-## same as for the library above
-add_dependencies(listener ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(listener
+add_executable(simulator src/simulator.cpp)
+add_dependencies(simulator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(simulator
    ${catkin_LIBRARIES}
 )
 

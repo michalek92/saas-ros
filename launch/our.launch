@@ -1,4 +1,6 @@
 <launch>
-<node pkg="saastutorial" type="publisher" name="publisher" output="screen" />
-<node pkg="saastutorial" type="listener" name="listener" output="screen" />
+	<node pkg="saastutorial" type="joy_teleop" name="joy_teleop" output="screen"/>
+	<node pkg="saastutorial" type="simulator" name="simulator" output="screen"/>
+	<!-- dummy publisher for testing purposes -->
+	<node pkg="saastutorial" type="vjoy" name="vjoy" output="screen"/>
 </launch>
