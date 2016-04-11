@@ -1,0 +1,11 @@
+<launch>
+   
+
+  <node pkg="saas_tutorial" type="joy_teleop" name="joy_teleop" output="screen">
+  <param name="linear_gain"	value="1.5"/>  
+  <param name="angular_gain"	value="1.2"/> 
+  </node>
+  
+  <node pkg="saas_tutorial" type="simulator" name="simulator" output="screen"/>
+
+</launch>

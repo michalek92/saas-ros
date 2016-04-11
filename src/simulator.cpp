@@ -1,33 +1,25 @@
 #include "../include/simulator.h"
 
-Simulator * Simulator::instance = 0;
+Simulator::Simulator() : nh_(""), TP(0.01) {
+  vel_sub_ = nh_.subscribe("velocity", 10, &Simulator::velocityCallback, this);
+  pose_pub_ = nh_.advertise<geometry_msgs::Pose2D>("pose", 10);
 
-Simulator::Simulator() : nh("")
-{
-  velocity_sub = nh.subscribe("twist", 10, velocityCallbackWrapper);
+  ros::Rate rate(100);
+  while (ros::ok()) {
+    pose_.x += velocity_.linear.x * cos(pose_.theta) * TP;
+    pose_.y += velocity_.linear.x * sin(pose_.theta) * TP;
+    pose_.theta += velocity_.angular.z * TP;
+
+    pose_pub_.publish(pose_);
+  }
 }
 
-void Simulator::velocityCallbackWrapper(const geometry_msgs::Twist::ConstPtr& vel_msg)
-{
-  getInstance()->velocityCallback(vel_msg);
+void Simulator::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel_msg) {
+  velocity_ = *vel_msg;
 }
 
-void Simulator::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel_msg)
-{
- ROS_INFO("Joy data: %f %f %f", vel_msg->linear.x, vel_msg->linear.y, vel_msg->linear.z);
-}
-
-Simulator* Simulator::getInstance()
-{
-  if(instance == 0)
-    instance = new Simulator;
-  return instance;
-}
-
-int main(int argc, char** argv)
-{
-    ros::init(argc, argv, "simulator");
-    Simulator::getInstance();
-    ros::spin();
-    return 0;
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "simulator");
+  Simulator S;
+  return 0;
 }

@@ -2,24 +2,19 @@
 #include <geometry_msgs/Pose2D.h>
 #include <geometry_msgs/Twist.h>
 
-class Simulator
-{
-  public:
-    Simulator();
-    void publish();
-    static Simulator *getInstance();
+class Simulator {
+public:
+  Simulator();
 
-  private:
-    // I know, the singleton approach is ugly.
-    // We cant pass a member function as callback directly though...
-    static void velocityCallbackWrapper(const geometry_msgs::Twist::ConstPtr& vel_msg);
-    static Simulator *instance;
+private:
+  void velocityCallback(const geometry_msgs::Twist::ConstPtr& vel_msg);
 
-    void velocityCallback(const geometry_msgs::Twist::ConstPtr& vel_msg);
-    ros::NodeHandle nh;
-    ros::Subscriber velocity_sub;
-    ros::Publisher pose_pub;
+  const double TP;
 
-    geometry_msgs::Pose2D pose;
-    geometry_msgs::Twist twist;
+  ros::NodeHandle nh_;
+  ros::Subscriber vel_sub_;
+  ros::Publisher pose_pub_;
+
+  geometry_msgs::Pose2D pose_;
+  geometry_msgs::Twist velocity_;
 };

@@ -1,35 +1,30 @@
-#include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
-#include <sensor_msgs/Joy.h>
+#include "../include/joy_teleop.h"
 
-ros::Publisher pub;
+JoyTeleop::JoyTeleop() : nh_(""), nh_local("~") {
+  joy_sub_ = nh_.subscribe("joy", 10, &JoyTeleop::joyCallback, this);
+  vel_pub_ = nh_.advertise<geometry_msgs::Twist>("velocity", 10);
 
-inline float scaleJoystick(float raw)
-{
-  // I'm not sure what the exact values are; this method assumes
-  // the joystick values to be from the 0-1 range
-  return (raw - 0.5) * 4;
-}
 
-void dataCallback(const sensor_msgs::Joy::ConstPtr& message)
-{
-  geometry_msgs::Twist msg;
+  //nh_.getParam() other way
+  nh_local.param<double>("linear_gain", k_v,2.0);
+  nh_local.param<double>("angular_gain", k_w,2.0);
 
-  msg.linear.x = scaleJoystick(message->axes[0]);
-  msg.linear.z = scaleJoystick(message->axes[2]);
-
-  pub.publish(msg);
-}
-
-int main(int argc, char** argv)
-{
-  ros::init(argc, argv, "joy_teleop");
-  ros::NodeHandle nh;
-  pub = nh.advertise<geometry_msgs::Twist>("twist", 10);
-
-  // again; not sure what the topic of joy messages is
-  ros::Subscriber subs = nh.subscribe("joy", 10, dataCallback);
+ // ROS_INFO_STREAM("Linear "<<k_v);
+ // ROS_INFO_STREAM("Angular "<<k_w);
 
   ros::spin();
 }
 
+void JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy_msg) {
+  geometry_msgs::Twist msg;
+  msg.linear.x = k_v * joy_msg->axes[1];
+  msg.angular.z = k_w * joy_msg->axes[0];
+
+  vel_pub_.publish(msg);
+}
+
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "joy_teleop");
+  JoyTeleop J;
+  return 0;
+}

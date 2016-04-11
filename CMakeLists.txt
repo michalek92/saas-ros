@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(saastutorial)
+project(saas_tutorial)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -101,7 +101,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES saastutorial
+#  LIBRARIES saas_tutorial
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -118,33 +118,31 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(saastutorial
-#   src/${PROJECT_NAME}/saastutorial.cpp
+# add_library(saas_tutorial
+#   src/${PROJECT_NAME}/saas_tutorial.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(saastutorial ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(saas_tutorial ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-## Declare C++ executables
-add_executable(vjoy src/vjoy.cpp)
-add_dependencies(vjoy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(vjoy
-   ${catkin_LIBRARIES}
-)
+## Declare a C++ executable
+add_executable(publisher src/publisher.cpp)
+add_dependencies(publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(publisher ${catkin_LIBRARIES})
 
-add_executable(joy_teleop src/joy_teleop.cpp)
-add_dependencies(joy_teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(joy_teleop
-   ${catkin_LIBRARIES}
-)
+add_executable(listener src/listener.cpp)
+add_dependencies(listener ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(listener ${catkin_LIBRARIES})
 
-add_executable(simulator src/simulator.cpp)
+add_executable(simulator src/simulator.cpp include/simulator.h)
 add_dependencies(simulator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(simulator
-   ${catkin_LIBRARIES}
-)
+target_link_libraries(simulator ${catkin_LIBRARIES})
+
+add_executable(joy_teleop src/joy_teleop.cpp include/joy_teleop.h)
+add_dependencies(joy_teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(joy_teleop ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -161,7 +159,7 @@ target_link_libraries(simulator
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS saastutorial saastutorial_node
+# install(TARGETS saas_tutorial saas_tutorial_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -186,7 +184,7 @@ target_link_libraries(simulator
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_saastutorial.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_saas_tutorial.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
